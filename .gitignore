@@ -1,0 +1,134 @@
+Thumbs.db
+.DS_Store
+.gradle
+build/
+out/
+.idea
+*.iml
+*.ipr
+*.iws
+.project
+.settings
+.classpath
+
+
+# Grails specific files
+target/
+.gradle/
+build/
+out/
+web-app/WEB-INF/
+*.war
+*.ear
+*.jar
+stacktrace.log
+*.log*
+.settings/
+.metadata
+.classpath
+.project
+.cache
+.DS_Store
+Thumbs.db
+
+# Grails plugin files
+plugin.xml
+plugins/
+*.zip
+*.tgz
+*.tar.gz
+
+# IDE files
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.metadata/
+.recommenders/
+.sonarlint/
+
+# Eclipse
+.project
+.classpath
+.settings/
+bin/
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# NetBeans
+nbproject/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# Gradle
+.gradle/
+build/
+gradle-app.setting
+!gradle-wrapper.jar
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Database files
+*.h2.db
+*.trace.db
+*.lock.db
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Application specific
+application.properties
+*.properties
+!wrapper/gradle-wrapper.properties
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*~
+*.bak
+
+# Log files
+*.log
+logs/
+stacktrace.log
+
+# Grails cache
+.grails/
+.slcache/
+
+# Asset pipeline
+grails-app/assets/javascripts/staging/
+grails-app/assets/stylesheets/staging/
+
+# Node.js (if using frontend build tools)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
