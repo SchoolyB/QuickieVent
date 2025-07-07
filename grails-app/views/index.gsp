@@ -6,6 +6,31 @@
 </head>
 <body>
 
+<!-- User Identity Modal -->
+<div id="userModal" class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Welcome to QuickEvent!</h3>
+    <p class="py-4">Please enter your information to continue:</p>
+    <form id="userForm">
+      <div class="form-control">
+        <label class="label">
+          <span class="label-text">Name</span>
+        </label>
+        <input type="text" id="userName" placeholder="Enter your name" class="input input-bordered w-full" required />
+      </div>
+      <div class="form-control mt-4">
+        <label class="label">
+          <span class="label-text">Email</span>
+        </label>
+        <input type="email" id="userEmail" placeholder="Enter your email" class="input input-bordered w-full" required />
+      </div>
+      <div class="modal-action">
+        <button type="submit" class="btn btn-primary">Continue</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- Hero-->
 <div class="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
     <div class="container mx-auto px-6 py-20">
@@ -77,6 +102,45 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Check if user info is already stored
+    const userName = sessionStorage.getItem('userName');
+    const userEmail = sessionStorage.getItem('userEmail');
+    
+    if (!userName || !userEmail) {
+        // Show modal if no user info
+        document.getElementById('userModal').classList.add('modal-open');
+    }
+    
+    // Handle form submission
+    document.getElementById('userForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const name = document.getElementById('userName').value.trim();
+        const email = document.getElementById('userEmail').value.trim();
+        
+        if (name && email) {
+            // Store user info in session storage
+            sessionStorage.setItem('userName', name);
+            sessionStorage.setItem('userEmail', email);
+            
+            // Close modal
+            document.getElementById('userModal').classList.remove('modal-open');
+        }
+    });
+    
+    // Update create event button to redirect to create-event page
+    document.querySelectorAll('button').forEach(button => {
+        if (button.textContent.includes('Create Event')) {
+            button.addEventListener('click', function() {
+                window.location.href = '/create-event';
+            });
+        }
+    });
+});
+</script>
 
 </body>
 </html>

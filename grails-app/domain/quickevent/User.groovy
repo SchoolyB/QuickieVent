@@ -9,12 +9,12 @@ class User {
     
     static constraints = {
         firstName blank: false, maxSize: 50
-        lastName blank: false, maxSize: 50
+        lastName nullable: true, blank: true, maxSize: 50
         email blank: false, email: true, unique: true
         password blank: false, minSize: 6
     }
     
     String toString() {
-        return "${firstName} ${lastName}"
+        return lastName ? "${firstName} ${lastName}" : firstName
     }
 }
