@@ -11,14 +11,16 @@ class PublicEventListController {
         // Create default events if they don't exist
         createDefaultEventsIfNeeded()
 
-        def events = Event.list()
+        def events = Event.list(sort: 'id', order: 'asc')
 
         return [events: events]
     }
 
     @Transactional
     private void createDefaultEventsIfNeeded() {
-        if (Event.count() == 0) {
+        // Only create default events if they don't already exist
+        // Check if any default events exist by looking for the first default event title
+        if (!Event.findByTitle(DefaultData.DEFAULT_EVENT_NAMES[0])) {
             for (int i = 0; i < DefaultData.DEFAULT_EVENT_NAMES.length; i++) {
                 def organizerName = DefaultData.DEFAULT_EVENT_ORGANIZERS[i]
                 def organizer = User.findByFirstName(organizerName.split(' ')[0])
