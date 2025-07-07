@@ -40,14 +40,14 @@
       <ul
         tabindex="0"
         class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
-        <li><a>Homepage</a></li>
-        <li><a>My Events</a></li>
-        <li><a>All Events</a></li>
+        <li><g:link uri="/">Homepage</g:link></li>
+        <li><g:link uri="/events">All Events</g:link></li>
+        <li><g:link uri="/create-event">Create Event</g:link></li>
       </ul>
     </div>
   </div>
   <div class="navbar-center">
-    <a class="btn btn-ghost text-xl">QuickEvent</a>
+    <g:link uri="/" class="btn btn-ghost text-xl">QuickEvent</g:link>
   </div>
   <div class="navbar-end">
     <button class="btn btn-ghost btn-circle">

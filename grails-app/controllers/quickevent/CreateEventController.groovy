@@ -4,21 +4,19 @@ import quickevent.Event
 import quickevent.User
 import grails.gorm.transactions.*
 
-
 class CreateEventController {
-
-    def index() {
+    def index() { //TODO: Come back to this
 
     }
 
-    //Note: Editors scream at you about this attribute not being resolvable but it is needed
+    // Save a new event
     @Transactional
     def save() {
         def event = new Event()
         event.title = params.title?.trim()
         event.description = params.description?.trim()
 
-        // Handle date picker - Grails date picker creates individual fields
+        //date stuff
         if (params.date_year && params.date_month && params.date_day) {
             def year = params.date_year
             def month = params.date_month
@@ -30,27 +28,27 @@ class CreateEventController {
 
         event.location = params.location?.trim()
 
-        // Check for required fields
+
         if (!event.title || !event.description || !event.location) {
             flash.error = "All fields are required (title, description, location, date)"
             render(view: "index", model: [event: event])
             return
         }
 
-        // Find or create user as organizer
+        // Set the user as the event organiner
         def organizerName = params.organizerName
         def organizerEmail = params.organizerEmail
 
         if (organizerName && organizerEmail) {
-            // Check if user already exists
+            // Check if user already exists in database
             def organizer = User.findByEmail(organizerEmail)
             if (!organizer) {
-                // Create new user
+                // Create new user if they dont exist yet
                 organizer = new User(
                     firstName: organizerName.split(' ')[0],
                     lastName: organizerName.split(' ').size() > 1 ? organizerName.split(' ')[1..-1].join(' ') : '',
                     email: organizerEmail,
-                    password: 'temp123'
+                    password: 'temp123' // obviously not secure but good enough for now
                 )
                 organizer.save(flush: true)
             }
@@ -61,13 +59,14 @@ class CreateEventController {
             flash.message = "Event '${event.title}' created successfully!"
             redirect(uri: "/events")
             return
-        } else {
+        } else { //throw err if cant save
             flash.error = "Error creating event: ${event.errors.allErrors.collect{it.defaultMessage}.join(', ')}"
             render(view: "index", model: [event: event])
             return
         }
     }
-    
+
+    //Hanlde editing an event,
     def edit() {
         def event = Event.get(params.id)
         if (!event) {
@@ -75,18 +74,19 @@ class CreateEventController {
             redirect(uri: "/events")
             return
         }
-        
-        // Check if current user is the organizer
+
+        // Make sure organizer can only edit their own events (basic security)
         def userEmail = params.userEmail
         if (!userEmail || event.organizer?.email != userEmail) {
             flash.error = "You can only edit events you created"
             redirect(uri: "/events")
             return
         }
-        
+
         return [event: event]
     }
-    
+
+
     @Transactional
     def update() {
         def event = Event.get(params.id)
@@ -95,21 +95,21 @@ class CreateEventController {
             redirect(uri: "/events")
             return
         }
-        
-        // Check if current user is the organizer
+
+        //only the organizer can edit an event they created
         def userEmail = params.userEmail
         if (!userEmail || event.organizer?.email != userEmail) {
             flash.error = "You can only edit events you created"
             redirect(uri: "/events")
             return
         }
-        
-        // Update event properties
+
+        //take the params and update the event with them
         event.title = params.title
         event.description = params.description
         event.location = params.location
-        
-        // Handle date picker
+
+
         if (params.date_year && params.date_month && params.date_day) {
             def year = params.date_year
             def month = params.date_month
@@ -118,7 +118,7 @@ class CreateEventController {
         } else if (params.date && params.date != 'date.struct') {
             event.date = params.date.toString()
         }
-        
+
         if (event.save(flush: true)) {
             flash.message = "Event '${event.title}' updated successfully!"
             redirect(uri: "/events")
@@ -127,7 +127,8 @@ class CreateEventController {
             render(view: "edit", model: [event: event])
         }
     }
-    
+
+    //Handles deleting an event
     @Transactional
     def delete() {
         def event = Event.get(params.id)
@@ -136,15 +137,15 @@ class CreateEventController {
             redirect(uri: "/events")
             return
         }
-        
-        // Check if current user is the organizer
+
+        // authorization check - cant let people delete other users events
         def userEmail = params.userEmail
         if (!userEmail || event.organizer?.email != userEmail) {
             flash.error = "You can only delete events you created"
             redirect(uri: "/events")
             return
         }
-        
+
         def eventTitle = event.title
         event.delete(flush: true)
         flash.message = "Event '${eventTitle}' deleted successfully!"
